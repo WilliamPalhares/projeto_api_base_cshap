@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using API_Cadastro.Interfaces;
 using API_Cadastro.Models;
+using API_Cadastro.ViewModel;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -29,7 +30,7 @@ namespace API_Cadastro.Controllers
 
         // GET api/cliente
         [HttpGet]
-        public async Task<IActionResult> Get()
+        public async Task<IActionResult> Get([FromQuery]string page)
         {
             try
             {
@@ -40,7 +41,24 @@ namespace API_Cadastro.Controllers
                     item.Pais = await this.paisRepository.GetObjectAsync(item.PaisId);
                 }
 
-                return Ok(list);
+                int count = list.Count();
+                int CurrentPage = Convert.ToInt32(page);
+                int PageSize = 1;
+                int TotalCount = count;
+                int TotalPages = (int)Math.Ceiling(count / (double)PageSize);
+
+                var items = list.Skip((CurrentPage - 1) * PageSize).Take(PageSize).ToList();
+
+                var paginationMetadata = new
+                {
+                    docs = items,
+                    total = count,
+                    limit = PageSize,
+                    page = CurrentPage,
+                    pages = TotalPages
+                };
+
+                return Ok(paginationMetadata);
             }
             catch (Exception ex)
             {

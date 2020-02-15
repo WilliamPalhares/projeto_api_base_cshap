@@ -63,7 +63,7 @@ namespace API_Cadastro
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1",
-                    new Info { Title = "API VitalConnect", Version = "v1" });
+                    new Info { Title = "API Base", Version = "v1" });
             });
 
             services.AddDbContext<ApplicationContext>(options => options.UseSqlServer(application.ConnectionString));
@@ -77,7 +77,7 @@ namespace API_Cadastro
                 options.AddPolicy(MyAllowSpecificOrigins,
                 builder =>
                 {
-                    builder.WithOrigins("http://localhost:4200", "*", "*")
+                    builder.WithOrigins("http://localhost:3000", "*", "*")
                            .WithHeaders()
                            .AllowAnyHeader()
                            .AllowAnyMethod();
@@ -106,7 +106,7 @@ namespace API_Cadastro
 
             app.UseSwaggerUI(c =>
             {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "API VitalConnect V1");
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "API Base V1");
             });
 
             app.UseResponseCompression();

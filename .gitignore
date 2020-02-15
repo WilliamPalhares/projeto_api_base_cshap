@@ -3,3 +3,5 @@
 ################################################################################
 
 /.vs/API_Cadastro
+/API_Cadastro/bin/Debug/netcoreapp2.2
+/API_Cadastro/obj
